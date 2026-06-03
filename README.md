@@ -1,55 +1,104 @@
-# 🏗️ 建设集团管理系统
+# 建设集团管理系统
 
-基于 Vue3 + Django 的企业级管理系统，提供文件管理、AI分析、用户管理等功能。
+基于 Vue 3 + Django 6.0.4 的前后端分离企业管理系统。
 
-## 📋 技术栈
+## 🛠️ 技术栈
 
-### 前端
-- **框架**: Vue 3 (Composition API)
-- **构建工具**: Vite
-- **UI组件**: Element Plus
-- **状态管理**: Vuex
-- **路由**: Vue Router
-- **HTTP客户端**: Axios
+| 分类 | 技术 | 版本 |
+| :--- | :--- | :--- |
+| 前端框架 | Vue | 3.x |
+| 前端构建 | Vite | 6.x |
+| UI 组件 | Element Plus | - |
+| 状态管理 | Vuex | - |
+| 路由 | Vue Router | - |
+| 后端框架 | Django | 6.0.4 |
+| API 框架 | Django REST Framework | - |
+| 任务队列 | Celery | - |
+| 数据库 | MySQL | 5.7+/8.x |
+| 消息代理 | RabbitMQ | - |
 
-### 后端
-- **框架**: Django 6.0.4
-- **API**: Django REST Framework
-- **任务队列**: Celery + RabbitMQ
-- **数据库**: SQLite (开发环境) / PostgreSQL (生产环境)
+## 📁 项目结构
 
-## 🛠️ 环境要求
+```
+tare_project/
+├── backend/                    # Django 后端服务
+│   ├── apps/
+│   │   ├── user_auth/          # 用户认证模块
+│   │   │   ├── models.py       # 自定义用户模型
+│   │   │   ├── views.py        # 登录/注册接口
+│   │   │   └── admin.py        # 用户管理后台
+│   │   ├── file_management/    # 文件管理模块
+│   │   │   ├── models.py       # 文件/分类模型
+│   │   │   ├── views.py        # 文件上传/下载接口
+│   │   │   └── admin.py        # 文件管理后台
+│   │   ├── ai_analysis/        # AI 分析模块
+│   │   │   ├── models.py       # 分析结果模型
+│   │   │   ├── views.py        # AI 分析接口
+│   │   │   ├── tasks.py        # Celery 异步任务
+│   │   │   └── admin.py        # 分析管理后台
+│   │   └── links/              # 链接导航模块
+│   │       └── views.py        # 系统链接汇总页面
+│   ├── project/                # Django 配置
+│   │   ├── settings.py         # 项目配置
+│   │   └── urls.py             # 路由配置
+│   ├── manage.py               # Django 管理命令
+│   └── requirements.txt        # Python 依赖
+├── frontend/                   # Vue 前端应用
+│   ├── src/
+│   │   ├── views/              # 页面组件
+│   │   │   ├── DirectLogin.vue # 登录页面
+│   │   │   ├── Dashboard.vue   # 仪表盘首页
+│   │   │   ├── FileManagement.vue # 文件管理
+│   │   │   ├── AIAnalysis.vue  # AI 分析
+│   │   │   └── UserManagement.vue # 用户管理
+│   │   ├── components/         # 公共组件
+│   │   │   ├── Header.vue      # 顶部导航
+│   │   │   └── Sidebar.vue     # 侧边栏
+│   │   ├── store/              # Vuex 状态管理
+│   │   ├── router/             # 路由配置
+│   │   └── utils/              # 工具函数
+│   └── package.json            # Node.js 依赖
+├── start_backend.bat           # 后端一键启动脚本
+├── start_frontend.bat          # 前端一键启动脚本
+└── README.md                   # 项目说明文档
+```
 
-| 依赖 | 版本 |
-|------|------|
-| Python | >= 3.10 |
-| Node.js | >= 18.0 |
-| RabbitMQ | >= 3.9 |
-| Redis | >= 6.0 |
+## 🚀 快速开始
 
-## 📦 安装步骤
+### 环境要求
 
-### 1. 克隆仓库
+- Python 3.10+
+- Node.js 18+
+- MySQL 5.7+ 或 8.x
+- RabbitMQ 3.8+（可选，用于异步任务）
+
+### 启动步骤
+
+#### 1. 克隆项目
 
 ```bash
 git clone https://github.com/Cheng2026522/try.git
 cd try
 ```
 
-### 2. 后端环境配置
+#### 2. 启动后端服务
+
+**方式一：使用启动脚本（推荐）**
+
+```bash
+# Windows
+start_backend.bat
+```
+
+**方式二：手动启动**
 
 ```bash
 # 进入后端目录
 cd backend
 
-# 创建虚拟环境
+# 创建虚拟环境（首次运行）
 python -m venv Group_env
-
-# 激活虚拟环境 (Windows)
 Group_env\Scripts\activate
-
-# 激活虚拟环境 (Linux/Mac)
-source Group_env/bin/activate
 
 # 安装依赖
 pip install -r requirements.txt
@@ -58,180 +107,130 @@ pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
 
-# 创建超级用户
+# 创建超级用户（可选）
 python manage.py createsuperuser
+
+# 启动服务
+python manage.py runserver 0.0.0.0:8000
 ```
 
-### 3. 前端环境配置
+#### 3. 启动前端服务
+
+**方式一：使用启动脚本（推荐）**
+
+```bash
+# Windows
+start_frontend.bat
+```
+
+**方式二：手动启动**
 
 ```bash
 # 进入前端目录
 cd frontend
 
-# 安装依赖
+# 安装依赖（首次运行）
 npm install
+
+# 启动开发服务器
+npm run dev
 ```
 
-## 🚀 运行项目
-
-### 启动后端服务
+### 启动 Celery 异步任务（可选）
 
 ```bash
-cd backend
-Group_env\Scripts\activate
-python manage.py runserver 0.0.0.0:8000
+# 在 backend 目录下执行
+celery -A project worker --loglevel=info
 ```
 
-访问地址: http://localhost:8000
+## 🔗 服务访问地址
 
-### 启动前端服务
+| 服务 | 地址 | 说明 |
+| :--- | :--- | :--- |
+| 前端页面 | http://localhost:8084/ | Vue 开发服务器 |
+| 后端 API | http://localhost:8000/ | Django REST API |
+| 管理后台 | http://localhost:8000/admin/ | Django Admin |
+| 链接导航 | http://localhost:8000/links/ | 系统链接汇总页面 |
+| RabbitMQ | http://localhost:15672/ | 消息队列管理 |
 
-```bash
-cd frontend
-npm run dev -- --host 0.0.0.0 --port 8084
-```
+## 👤 测试账号
 
-访问地址: http://localhost:8084
+| 角色 | 用户名 | 密码 | 联系电话 |
+| :--- | :--- | :--- | :--- |
+| 管理员 | admin | admin | 13800138000 |
 
-### 启动Celery任务队列
-
-```bash
-cd backend
-Group_env\Scripts\activate
-celery -A project worker -l info
-```
-
-## 🌐 页面结构
-
-| 页面 | 路径 | 说明 |
-|------|------|------|
-| 登录页面 | /login | 用户登录入口 |
-| 仪表盘 | / | 系统首页/数据统计 |
-| 文件管理 | /files | 文件上传、下载、分类 |
-| AI分析 | /ai-analysis | 文档AI分析功能 |
-| 用户管理 | /users | 用户CRUD（管理员权限） |
-
-## 🔌 API接口
+## 📡 API 接口说明
 
 ### 用户认证
-| 接口 | 方法 | 说明 |
-|------|------|------|
-| `/api/auth/login/` | POST | 用户登录 |
-| `/api/auth/register/` | POST | 用户注册 |
-| `/api/auth/users/` | GET | 获取用户列表 |
+
+| 接口 | 方法 | 路径 | 说明 |
+| :--- | :--- | :--- | :--- |
+| 用户登录 | POST | `/api/auth/login/` | 用户名密码登录 |
+| 用户注册 | POST | `/api/auth/register/` | 新用户注册 |
+| 用户列表 | GET | `/api/auth/users/` | 获取用户列表（管理员） |
+| 用户详情 | GET | `/api/auth/users/{id}/` | 获取用户详情 |
 
 ### 文件管理
-| 接口 | 方法 | 说明 |
-|------|------|------|
-| `/api/files/files/` | GET/POST | 文件列表/上传 |
-| `/api/files/categories/` | GET/POST | 文件分类管理 |
 
-### AI分析
-| 接口 | 方法 | 说明 |
-|------|------|------|
-| `/api/ai/results/` | GET | 分析结果列表 |
-| `/api/ai/results/analyze/` | POST | 执行AI分析 |
-| `/api/ai/history/` | GET | 分析历史记录 |
+| 接口 | 方法 | 路径 | 说明 |
+| :--- | :--- | :--- | :--- |
+| 文件列表 | GET | `/api/files/files/` | 获取文件列表 |
+| 文件上传 | POST | `/api/files/files/` | 上传文件 |
+| 文件下载 | GET | `/api/files/download/{id}/` | 下载文件 |
+| 文件删除 | DELETE | `/api/files/files/{id}/` | 删除文件 |
+| 分类列表 | GET | `/api/files/categories/` | 获取分类列表 |
+| 分类创建 | POST | `/api/files/categories/` | 创建分类 |
 
-## 📁 项目结构
+### AI 分析
 
-```
-try/
-├── backend/                    # Django后端
-│   ├── apps/                  # 应用模块
-│   │   ├── user_auth/         # 用户认证模块
-│   │   ├── file_management/   # 文件管理模块
-│   │   ├── ai_analysis/       # AI分析模块
-│   │   └── links/             # 链接导航模块
-│   ├── project/               # 项目配置
-│   ├── manage.py              # Django管理命令
-│   └── requirements.txt       # Python依赖
-├── frontend/                  # Vue3前端
-│   ├── src/                   # 源代码
-│   │   ├── views/             # 页面组件
-│   │   ├── components/        # 公共组件
-│   │   ├── store/             # Vuex状态管理
-│   │   ├── router/            # 路由配置
-│   │   └── utils/             # 工具函数
-│   ├── index.html             # HTML入口
-│   ├── package.json           # Node依赖
-│   └── vite.config.js         # Vite配置
-├── .gitignore                 # Git忽略配置
-└── README.md                  # 项目说明
-```
+| 接口 | 方法 | 路径 | 说明 |
+| :--- | :--- | :--- | :--- |
+| 分析列表 | GET | `/api/ai/results/` | 获取分析结果 |
+| 开始分析 | POST | `/api/ai/results/analyze/` | 对文件进行 AI 分析 |
+| 分析问答 | POST | `/api/ai/results/{id}/qa/` | 智能问答 |
+| 选择版本 | POST | `/api/ai/results/{id}/select_version/` | 选择分析版本 |
 
-## 👥 Git协作流程
+## 🔧 配置说明
 
-### 分支规范
+### 数据库配置
 
-| 分支类型 | 命名规则 | 说明 |
-|----------|----------|------|
-| 主分支 | `master` | 生产环境代码 |
-| 开发分支 | `develop` | 开发集成分支 |
-| 功能分支 | `feature/*` | 新功能开发 |
-| 修复分支 | `bugfix/*` | Bug修复 |
+修改 `backend/project/settings.py`：
 
-### 开发流程
-
-```bash
-# 1. 拉取最新代码
-git checkout master
-git pull origin master
-
-# 2. 创建功能分支
-git checkout -b feature/new-feature
-
-# 3. 开发并提交代码
-git add .
-git commit -m "feat: add new feature"
-
-# 4. 推送到远程分支
-git push origin feature/new-feature
-
-# 5. 创建Pull Request到develop分支
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'construction_db',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {'charset': 'utf8mb4'}
+    }
+}
 ```
 
-### 提交规范
+### CORS 配置
 
-```
-feat: 新增功能
-fix: 修复Bug
-docs: 更新文档
-style: 代码格式
-refactor: 代码重构
-test: 添加测试
-chore: 构建/工具更新
+```python
+CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8080',
+    'http://localhost:8084',
+]
 ```
 
-## 🔐 测试账号
+## 📝 开发说明
 
-| 角色 | 用户名 | 密码 |
-|------|--------|------|
-| 管理员 | admin | admin |
+1. **前端开发**：进入 `frontend` 目录，运行 `npm run dev` 启动开发服务器
+2. **后端开发**：进入 `backend` 目录，运行 `python manage.py runserver` 启动开发服务器
+3. **数据库迁移**：修改模型后，运行 `python manage.py makemigrations` 和 `python manage.py migrate`
+4. **代码提交**：使用 Git 管理代码，提交前请确保代码通过测试
 
-## ⚙️ 管理后台
+## 📄 许可证
 
-| 后台 | 地址 |
-|------|------|
-| Django Admin | http://localhost:8000/admin/ |
-| RabbitMQ | http://localhost:15672/ (guest/guest) |
-| 链接导航 | http://localhost:8000/ |
-
-## ❓ 常见问题
-
-### Q: 前端无法登录？
-A: 请确保后端服务正常运行，检查CSRF配置，确认用户名密码正确。
-
-### Q: 文件上传失败？
-A: 检查文件大小限制（默认10MB），确保uploads目录有写入权限。
-
-### Q: AI分析无响应？
-A: 检查RabbitMQ服务是否启动，确保Celery worker正在运行。
-
-## 📞 联系方式
-
-如有问题请联系项目管理员。
+MIT License
 
 ---
 
-*建设集团管理系统 v1.0*
+**建设集团管理系统 v1.0** | 最后更新：2026-06-03
